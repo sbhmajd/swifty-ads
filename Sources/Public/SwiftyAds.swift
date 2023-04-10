@@ -354,11 +354,13 @@ extension SwiftyAds: SwiftyAdsType {
     ///
     /// - parameter viewController: The view controller that will present the ad.
     /// - parameter interval: The interval of when to show the ad, e.g every 4th time the method is called. Set to nil to always show.
+    /// - parameter onContinue: An optional callback when the interval still counting.
     /// - parameter onOpen: An optional callback when the ad was presented.
     /// - parameter onClose: An optional callback when the ad was dismissed.
     /// - parameter onError: An optional callback when an error has occurred.
     public func showInterstitialAd(from viewController: UIViewController,
                                    afterInterval interval: Int?,
+                                   onContinue: (() -> Void)?,
                                    onOpen: (() -> Void)?,
                                    onClose: (() -> Void)?,
                                    onError: ((Error) -> Void)?) {
@@ -366,7 +368,10 @@ extension SwiftyAds: SwiftyAdsType {
         guard hasConsent else { return }
 
         if let interval = interval {
-            guard interstitialAdIntervalTracker.canShow(forInterval: interval) else { return }
+            guard interstitialAdIntervalTracker.canShow(forInterval: interval) else {
+                onContinue?()
+                return
+            }
         }
         
         interstitialAd?.show(
