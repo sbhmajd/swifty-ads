@@ -6,6 +6,8 @@
 	<string>Some id</string>
 	<key>interstitialAdUnitId</key>
 	<string>Some id</string>
+	<key>interstitialVideoAdUnitId</key>
+	<string>Some id</string>
 	<key>rewardedAdUnitId</key>
 	<string>Some id</string>
 	<key>rewardedInterstitialAdUnitId</key>

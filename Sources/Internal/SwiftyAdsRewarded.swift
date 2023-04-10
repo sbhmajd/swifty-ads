@@ -26,6 +26,7 @@ protocol SwiftyAdsRewardedType: AnyObject {
     var isReady: Bool { get }
     func load()
     func show(from viewController: UIViewController,
+              with options: SwiftyAdsServerSideVerificationOptions?,
               onOpen: (() -> Void)?,
               onClose: (() -> Void)?,
               onError: ((Error) -> Void)?,
@@ -74,11 +75,11 @@ extension SwiftyAdsRewarded: SwiftyAdsRewardedType {
 
             self.rewardedAd = ad
             self.rewardedAd?.fullScreenContentDelegate = self
-            
         }
     }
  
     func show(from viewController: UIViewController,
+              with options: SwiftyAdsServerSideVerificationOptions?,
               onOpen: (() -> Void)?,
               onClose: (() -> Void)?,
               onError: ((Error) -> Void)?,
@@ -93,6 +94,13 @@ extension SwiftyAdsRewarded: SwiftyAdsRewardedType {
             onError?(SwiftyAdsError.rewardedAdNotLoaded)
             onNotReady?()
             return
+        }
+        
+        if let options = options {
+            let serverOptions = GADServerSideVerificationOptions()
+            serverOptions.userIdentifier = options.uuid
+            serverOptions.customRewardString = options.customString
+            self.rewardedAd?.serverSideVerificationOptions = serverOptions
         }
 
         do {

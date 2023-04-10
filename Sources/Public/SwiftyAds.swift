@@ -391,6 +391,7 @@ extension SwiftyAds: SwiftyAdsType {
     /// - Warning:
     /// Rewarded ads may be non-skippable and should only be displayed after pressing a dedicated button.
     public func showRewardedAd(from viewController: UIViewController,
+                               with options: SwiftyAdsServerSideVerificationOptions?,
                                onOpen: (() -> Void)?,
                                onClose: (() -> Void)?,
                                onError: ((Error) -> Void)?,
@@ -400,6 +401,7 @@ extension SwiftyAds: SwiftyAdsType {
 
         rewardedAd?.show(
             from: viewController,
+            with: options,
             onOpen: onOpen,
             onClose: onClose,
             onError: onError,
