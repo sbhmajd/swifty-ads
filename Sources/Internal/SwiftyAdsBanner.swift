@@ -139,6 +139,35 @@ extension SwiftyAdsBanner: SwiftyAdsBannerType {
         // Create an ad request and load the adaptive banner ad.
         bannerView.load(request())
     }
+    
+    func getBannerSize(isLandscape: Bool) -> CGSize {
+        guard !isDisabled() else { return CGSize.zero }
+        guard hasConsent() else { return CGSize.zero }
+        guard let bannerView = bannerView else { return CGSize.zero }
+        guard let currentView = bannerView.rootViewController?.view else { return CGSize.zero }
+        
+        // Determine the view width to use for the ad width.
+        let frame = { () -> CGRect in
+            switch position {
+            case .top(let isUsingSafeArea), .bottom(let isUsingSafeArea):
+                if isUsingSafeArea {
+                    return currentView.frame.inset(by: currentView.safeAreaInsets)
+                } else {
+                    return currentView.frame
+                }
+            }
+        }()
+        
+        // Get Adaptive GADAdSize and set the ad view.
+        let bannerViewSize: GADAdSize
+        if isLandscape {
+            bannerViewSize = GADLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(frame.size.width)
+        } else {
+            bannerViewSize = GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth(frame.size.width)
+        }
+        
+        return bannerViewSize.size
+    }
 
     func hide() {
         guard let bannerView = bannerView else { return }

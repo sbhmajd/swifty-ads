@@ -21,12 +21,18 @@
 //    SOFTWARE.
 
 import Foundation
+import struct CoreGraphics.CGSize
 
 public protocol SwiftyAdsBannerType: AnyObject {
     /// Show the banner ad.
     ///
     /// - parameter isLandscape: If true banner is sized for landscape, otherwise portrait.
     func show(isLandscape: Bool)
+    
+    /// Get the banner ad view size.
+    ///
+    /// - parameter isLandscape: If true banner is sized for landscape, otherwise portrait.
+    func getBannerSize(isLandscape: Bool) -> CGSize
 
     /// Hide the banner ad.
     func hide()
