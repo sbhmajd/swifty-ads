@@ -364,8 +364,14 @@ extension SwiftyAds: SwiftyAdsType {
                                    onOpen: (() -> Void)?,
                                    onClose: (() -> Void)?,
                                    onError: ((Error) -> Void)?) {
-        guard !isDisabled else { return }
-        guard hasConsent else { return }
+        guard !isDisabled else {
+            onContinue?()
+            return
+        }
+        guard hasConsent else {
+            onContinue?()
+            return
+        }
 
         if let interval = interval {
             guard interstitialAdIntervalTracker.canShow(forInterval: interval) else {
