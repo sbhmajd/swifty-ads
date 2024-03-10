@@ -408,7 +408,7 @@ extension SwiftyAds: SwiftyAdsType {
                                onError: ((Error) -> Void)?,
                                onNotReady: (() -> Void)?,
                                onReward: @escaping (NSDecimalNumber) -> Void) {
-        guard hasConsent else { return }
+        guard hasConsent else { onError?(SwiftyAdsError.consentFormNotAvailable); return }
 
         rewardedAd?.show(
             from: viewController,
@@ -441,7 +441,7 @@ extension SwiftyAds: SwiftyAdsType {
                                            onError: ((Error) -> Void)?,
                                            onReward: @escaping (NSDecimalNumber) -> Void) {
         guard !isDisabled else { return }
-        guard hasConsent else { return }
+        guard hasConsent else { onError?(SwiftyAdsError.consentFormNotAvailable); return }
 
         if let interval = interval {
             guard rewardedInterstitialAdIntervalTracker.canShow(forInterval: interval) else { return }
@@ -477,7 +477,7 @@ extension SwiftyAds: SwiftyAdsType {
                              onError: ((Error) -> Void)?,
                              onReceive: @escaping (GADNativeAd) -> Void) {
         guard !isDisabled else { return }
-        guard hasConsent else { return }
+        guard hasConsent else { onError?(SwiftyAdsError.consentFormNotAvailable); return }
 
         if nativeAd == nil, case .custom(let adUnitId) = adUnitIdType {
             nativeAd = SwiftyAdsNative(
@@ -515,6 +515,14 @@ extension SwiftyAds: SwiftyAdsType {
             loadAds()
         }
     }
+    
+    /// Enable/Disable ad personalization
+    ///
+    /// - parameter isEnabled: Set to true to enable ad personalization or false to disable it.
+    public func setAdPersonalization(_ isEnabled: Bool) {
+        
+        mobileAds.requestConfiguration.publisherPrivacyPersonalizationState = isEnabled ? .enabled : .disabled
+    }
 }
 
 // MARK: - Private Methods
@@ -550,7 +558,7 @@ private extension SwiftyAds {
         mediationConfigurator?.updateCOPPA(isTaggedForChildDirectedTreatment: isCOPPAEnabled)
         
         // Update GADMobileAds
-        mobileAds.requestConfiguration.tag(forChildDirectedTreatment: isCOPPAEnabled)
+        mobileAds.requestConfiguration.tagForChildDirectedTreatment = NSNumber(value: isCOPPAEnabled)
     }
     
     func updateGDPR(for configuration: SwiftyAdsConfiguration,
@@ -578,7 +586,7 @@ private extension SwiftyAds {
         }
 
         if let isTaggedForUnderAgeOfConsent = configuration.isTaggedForUnderAgeOfConsent {
-            mobileAds.requestConfiguration.tagForUnderAge(ofConsent: isTaggedForUnderAgeOfConsent)
+            mobileAds.requestConfiguration.tagForUnderAgeOfConsent = NSNumber(value: isTaggedForUnderAgeOfConsent)
         }
     }
     
