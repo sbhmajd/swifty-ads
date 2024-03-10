@@ -68,6 +68,7 @@ public protocol SwiftyAdsType: AnyObject {
                    for environment: SwiftyAdsEnvironment,
                    requestBuilder: SwiftyAdsRequestBuilderType,
                    mediationConfigurator: SwiftyAdsMediationConfiguratorType?,
+                   customConfiguration: SwiftyAdsConfiguration?,
                    consentStatusDidChange: @escaping (SwiftyAdsConsentStatus) -> Void,
                    completion: @escaping SwiftyAdsConsentResultHandler)
     func askForConsent(from viewController: UIViewController,

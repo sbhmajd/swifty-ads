@@ -130,14 +130,15 @@ extension SwiftyAds: SwiftyAdsType {
     public func configure(from viewController: UIViewController,
                           for environment: SwiftyAdsEnvironment,
                           requestBuilder: SwiftyAdsRequestBuilderType,
-                          mediationConfigurator: SwiftyAdsMediationConfiguratorType?,
+                          mediationConfigurator: SwiftyAdsMediationConfiguratorType? = nil,
+                          customConfiguration: SwiftyAdsConfiguration? = nil,
                           consentStatusDidChange: @escaping (SwiftyAdsConsentStatus) -> Void,
                           completion: @escaping SwiftyAdsConsentResultHandler) {
         // Update configuration for selected environment
         let configuration: SwiftyAdsConfiguration
         switch environment {
         case .production:
-            configuration = .production()
+            configuration = customConfiguration ?? .production()
         case .development(let testDeviceIdentifiers, let consentConfiguration):
             configuration = .debug(isUMPDisabled: consentConfiguration.isDisabled)
             mobileAds.requestConfiguration.testDeviceIdentifiers = [GADSimulatorID].compactMap { $0 } + testDeviceIdentifiers

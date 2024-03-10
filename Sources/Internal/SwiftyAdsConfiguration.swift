@@ -22,7 +22,26 @@
 
 import Foundation
 
-struct SwiftyAdsConfiguration: Decodable, Equatable {
+public struct SwiftyAdsConfiguration: Decodable, Equatable {
+    public init(bannerAdUnitId: String? = nil,
+                interstitialAdUnitId: String? = nil,
+                interstitialVideoAdUnitId: String? = nil,
+                rewardedAdUnitId: String? = nil,
+                rewardedInterstitialAdUnitId: String? = nil,
+                nativeAdUnitId: String? = nil,
+                isTaggedForChildDirectedTreatment: Bool? = nil,
+                isTaggedForUnderAgeOfConsent: Bool? = nil,
+                isUMPDisabled: Bool? = nil) {
+        self.bannerAdUnitId = bannerAdUnitId
+        self.interstitialAdUnitId = interstitialAdUnitId
+        self.interstitialVideoAdUnitId = interstitialVideoAdUnitId
+        self.rewardedAdUnitId = rewardedAdUnitId
+        self.rewardedInterstitialAdUnitId = rewardedInterstitialAdUnitId
+        self.nativeAdUnitId = nativeAdUnitId
+        self.isTaggedForChildDirectedTreatment = isTaggedForChildDirectedTreatment
+        self.isTaggedForUnderAgeOfConsent = isTaggedForUnderAgeOfConsent
+        self.isUMPDisabled = isUMPDisabled
+    }
     let bannerAdUnitId: String?
     let interstitialAdUnitId: String?
     let interstitialVideoAdUnitId: String?
